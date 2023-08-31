@@ -18,25 +18,31 @@
  */
 package de.thomas_oster.liblasercut.drivers;
 
-import de.thomas_oster.liblasercut.*;
-import de.thomas_oster.liblasercut.platform.Point;
-import de.thomas_oster.liblasercut.platform.Util;
-import org.junit.Test;
-
-import java.util.Arrays;
-
 import static org.junit.Assert.assertEquals;
 
-public class EpilogHelixCutterTest extends EpilogHelix
+import de.thomas_oster.liblasercut.LaserJob;
+import de.thomas_oster.liblasercut.LaserProperty;
+import de.thomas_oster.liblasercut.VectorPart;
+import de.thomas_oster.liblasercut.platform.Util;
+import java.util.Arrays;
+import org.junit.Test;
+
+public class EpilogZingCutterTest extends EpilogZing
 {
   // estimate time is truncated to int
   final double DELTA = 1.0;
+
+  /** millimeters/second */
+  final double MOVE_SPEED_X =  225.7;
+  final double MOVE_SPEED_Y = 203.2;
+
+  final double CUT_SPEED = 27.61;
   @Test
   public void testHostName()
   {
     String hostname = "FooBar";
-    EpilogHelix helix = new EpilogHelix(hostname);
-    assertEquals(hostname, helix.getHostname());
+    EpilogZing zing = new EpilogZing(hostname);
+    assertEquals(hostname, zing.getHostname());
   }
   @Test
   public void testEstimateDuration()
@@ -58,17 +64,17 @@ public class EpilogHelixCutterTest extends EpilogHelix
       VectorPart p = new VectorPart(prop, dpi);
       p.moveto(1000 * mm2px, 1 * mm2px);
       job.addPart(p);
-      expectedTime += 1000 / this.VECTOR_MOVESPEED_X;
+      expectedTime += 1000 / MOVE_SPEED_X;
       assertEquals(expectedTime, this.estimateJobDuration(job), DELTA);
 
       // 2. Move mainly in y -> time == dy / move_speed_y (always at full speed).
       p.moveto(1000 * mm2px, 1001 * mm2px);
-      expectedTime += 1000 / this.VECTOR_MOVESPEED_Y;
+      expectedTime += 1000 / MOVE_SPEED_Y;
       assertEquals(expectedTime, this.estimateJobDuration(job), DELTA);
 
       // 3. Cut line at speedPercent.
       p.lineto(1500 * mm2px, 1701 * mm2px);
-      expectedTime += Math.hypot(500, 700) / this.VECTOR_LINESPEED * 100.0 / speedPercent;
+      expectedTime += Math.hypot(500, 700) / CUT_SPEED * 100.0 / speedPercent;
       assertEquals(expectedTime, this.estimateJobDuration(job), DELTA);
 
       // 4. Engrave.
