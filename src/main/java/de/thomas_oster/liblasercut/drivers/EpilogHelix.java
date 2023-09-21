@@ -38,11 +38,11 @@ public class EpilogHelix extends EpilogCutter
 {
   // Calibrated by Seth Troisi on Epilog Helix circa August 2023.
   // Movement speed in millimeters / second.
-  protected final double VECTOR_MOVESPEED_X = 163d;
-  protected final double VECTOR_MOVESPEED_Y = 163d;
+  protected static final double VECTOR_MOVESPEED_X = 163d;
+  protected static final double VECTOR_MOVESPEED_Y = 163d;
 
   // Cut Speed in millimeters / second.
-  protected final double VECTOR_LINESPEED = 21.3d;
+  protected static final double VECTOR_LINESPEED = 21.3d;
 
 
   public EpilogHelix()
